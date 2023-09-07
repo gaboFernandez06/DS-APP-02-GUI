@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.util.EventObject;
 
 public class HelloController {
@@ -23,14 +24,16 @@ public class HelloController {
     @FXML private  Label  wrongLabel;
     @FXML private  Label correctLabel;
     @FXML public  Label accuracyLabel;
+    @FXML private ImageView imageView;
+
     public  void initialize() {
+        Image image = new Image("file:///C:/Users/YourUsername/Desktop/sc.png");
+        imageView.setImage(image);
         if ( roundsPlayed <= 25) {
             roundsPlayed++;
             welcomeText.setText("Please click which button this  word this definition matches with:");
             defbox.setText("Definition :  ");
-            int listSize = GameLogic.wordList.size();
-            if ( listSize > 0 ) {
-                rand = (int) (Math.random() *listSize);
+                rand = (int) (Math.random() *GameLogic.wordList.size());
                 String def = GameLogic.defList2.get(rand);
                 String word = GameLogic.wordList2.get(rand);
                 String removeWord = GameLogic.wordList.get(rand);
@@ -39,7 +42,6 @@ public class HelloController {
                 buttonA.setText(word);
                 Shuffle();
             }
-        }
         welcomeText.setText("Game Over Thank You ");
         if (accuracy < 70) {
             accuracyLabel.setStyle("-fx-text-fill: red;");
@@ -58,7 +60,7 @@ public class HelloController {
             String currentWord = GameLogic.wordList2.get(rand);
             if (currentWord.equals(buttonText)) {
                 GameLogic.defList2.remove(rand);
-                GameLogic.wordList.remove(rand);
+               GameLogic.wordList.remove(rand);
                 GameLogic.defList.remove(rand);
                 GameLogic.wordList2.remove(rand);
                 ScoreCount();
@@ -69,10 +71,11 @@ public class HelloController {
                 GameLogic.wordList.remove(rand);
                 GameLogic.defList.remove(rand);
                 GameLogic.wordList2.remove(rand);
+
+                // rand = (int) (Math.random() * GameLogic.wordList.size());
                 ScoreWrong();
             }
-            initialize();
-
+        initialize();
     }
 
     public void ScoreCount() {
