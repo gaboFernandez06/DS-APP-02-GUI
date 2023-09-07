@@ -27,9 +27,7 @@ public class HelloController {
     @FXML private ImageView imageView;
 
     public  void initialize() {
-        Image image = new Image("file:///C:/Users/YourUsername/Desktop/sc.png");
-        imageView.setImage(image);
-        if ( roundsPlayed <= 25) {
+        if (roundsPlayed <= 25) {
             roundsPlayed++;
             welcomeText.setText("Please click which button this  word this definition matches with:");
             defbox.setText("Definition :  ");
