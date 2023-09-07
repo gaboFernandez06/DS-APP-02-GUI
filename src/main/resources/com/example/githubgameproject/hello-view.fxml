@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -16,11 +13,6 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <Label alignment="TOP_RIGHT" text="The Ultimate GUI Review " />
-   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../../../../../../../../Desktop/Screen%20Shot%202023-09-06%20at%201.08.05%20PM.png" />
-      </image>
-   </ImageView>
    <HBox prefHeight="100.0" prefWidth="200.0">
       <children>
          <Label text="Correct :">
@@ -70,7 +62,7 @@
          <Font size="7.0" />
       </font>
    </Label>
-   <Label fx:id="defbox" text="Definitions">
+   <Label fx:id="defbox" text="Definitions" wrapText="true">
       <font>
          <Font size="7.0" />
       </font>
@@ -119,5 +111,9 @@
          </VBox>
       </children>
    </HBox>
-   <Canvas height="200.0" width="200.0" />
+   <Button fx:id="nextQues" mnemonicParsing="false" text="Next Question">
+      <font>
+         <Font size="7.0" />
+      </font>
+   </Button>
 </VBox>
