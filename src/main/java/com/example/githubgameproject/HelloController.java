@@ -3,12 +3,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.util.EventObject;
-
 public class HelloController {
+    private static Button buttonClicked ;
     public static int rand;
     public static int score;
     public static int roundsPlayed;
@@ -24,23 +20,37 @@ public class HelloController {
     @FXML private  Label  wrongLabel;
     @FXML private  Label correctLabel;
     @FXML public  Label accuracyLabel;
-    @FXML private ImageView imageView;
 
+    /*
+        Break out the initialize method into one new method (call it something like loadScreen)
+         • Load the question on the screen
+         // change rounds played back to 24
+       • For the onButtonClicked
+        - Move that method to the submit button
+          - validate answer
+     */
     public  void initialize() {
-        if (roundsPlayed <= 25) {
+        buttonA.setStyle("-fx-background-color: white;");
+        buttonB.setStyle("-fx-background-color: white;");
+        buttonC.setStyle("-fx-background-color: white;");
+        buttonD.setStyle("-fx-background-color: white;");
+        buttonSubmit.setStyle("-fx-background-color: white;");
+        buttonA.setDisable(false);
+        buttonB.setDisable(false);
+        buttonC.setDisable(false);
+        buttonD.setDisable(false);
+        defbox.setText(GameLogic.defList.get(rand));
+        if (roundsPlayed <= 4) {
             roundsPlayed++;
-            welcomeText.setText("Please click which button this  word this definition matches with:");
-            defbox.setText("Definition :  ");
-                rand = (int) (Math.random() *GameLogic.wordList.size());
-                String def = GameLogic.defList2.get(rand);
-                String word = GameLogic.wordList2.get(rand);
-                String removeWord = GameLogic.wordList.get(rand);
-                String modifiedDef = def.replace(removeWord, "________");
-                defbox.setText(modifiedDef);
-                buttonA.setText(word);
-                Shuffle();
-            }
-        welcomeText.setText("Game Over Thank You ");
+            loadScreen();
+        }else{
+            welcomeText.setText("Game Over Thank You ");
+            buttonA.setDisable(true);
+            buttonB.setDisable(true);
+            buttonC.setDisable(true);
+            buttonD.setDisable(true);
+            defbox.setText("GAME OVER");
+        }
         if (accuracy < 70) {
             accuracyLabel.setStyle("-fx-text-fill: red;");
         } else if (accuracy >= 70 && accuracy < 79) {
@@ -51,31 +61,53 @@ public class HelloController {
             accuracyLabel.setStyle("-fx-text-fill: green;");
         }
     }
+    public void loadScreen () {
+            welcomeText.setText("Please click which button this word this definition matches with:");
+            defbox.setText("Definition: ");
+            rand = (int) (Math.random() *GameLogic.wordList.size());
+            String def = GameLogic.defList2.get(rand);
+            String word = GameLogic.wordList2.get(rand);
+            String removeWord = GameLogic.wordList.get(rand);
+            String modifiedDef = def.replace(removeWord, "________");
+            defbox.setText(modifiedDef);
+            buttonA.setText(word);
+            Shuffle();
+    }
     public void buttonClicked(ActionEvent itemClicked )
     {
-        Button buttonClicked= (Button) itemClicked.getSource();
+         buttonClicked= (Button) itemClicked.getSource();
         String buttonText = buttonClicked.getText();
-            String currentWord = GameLogic.wordList2.get(rand);
-            if (currentWord.equals(buttonText)) {
-                GameLogic.defList2.remove(rand);
-               GameLogic.wordList.remove(rand);
-                GameLogic.defList.remove(rand);
-                GameLogic.wordList2.remove(rand);
-                ScoreCount();
-                defbox.setText((GameLogic.defList.get(rand)));
-            } else {
-                defbox.setText(GameLogic.defList.get(rand));
-                GameLogic.defList2.remove(rand);
-                GameLogic.wordList.remove(rand);
-                GameLogic.defList.remove(rand);
-                GameLogic.wordList2.remove(rand);
-
-                // rand = (int) (Math.random() * GameLogic.wordList.size());
-                ScoreWrong();
+        String currentWord = GameLogic.wordList2.get(rand);
+        buttonClicked.setStyle("-fx-background-color: yellow;");
+        buttonA.setDisable(true);
+        buttonB.setDisable(true);
+        buttonC.setDisable(true);
+        buttonD.setDisable(true);
+        if (buttonText.equals(currentWord)) {
+            buttonClicked.setStyle("-fx-background-color: green;");
+            defbox.setText(GameLogic.defList.get(rand));
+            GameLogic.defList2.remove(rand);
+            GameLogic.wordList.remove(rand);
+            GameLogic.defList.remove(rand);
+            GameLogic.wordList2.remove(rand);
+            ScoreCount();
+            //rand = (int) (Math.random() * GameLogic.wordList.size());
+        } else {
+            buttonClicked.setStyle("-fx-background-color: red;");
+            String wrongSent = GameLogic.defList2.get(rand);
+            wrongSent.replace("________", buttonText);
+            defbox.setText(wrongSent);
+            GameLogic.defList2.remove(rand);
+            GameLogic.wordList.remove(rand);
+            GameLogic.defList.remove(rand);
+            GameLogic.wordList2.remove(rand);
+            ScoreWrong();
+            // rand = (int) (Math.random() * GameLogic.wordList.size());
+        }
+            if ( buttonClicked == buttonSubmit) {
+                initialize();
             }
-        initialize();
     }
-
     public void ScoreCount() {
         score++;
         accuracy=((100.0*score)/ 25);
